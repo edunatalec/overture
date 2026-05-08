@@ -1,0 +1,28 @@
+name: overture
+description: >
+  Warm Flutter's image cache before the first frame. Drop-in from any
+  non-widget code, with NetworkImage or any custom ImageProvider.
+version: 0.1.0
+homepage: https://github.com/edunatalec/overture
+repository: https://github.com/edunatalec/overture
+
+environment:
+  sdk: ^3.10.0
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+
+topics:
+  - image
+  - cache
+  - prefetch
+  - performance

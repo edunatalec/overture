@@ -1,0 +1,28 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    directives_ordering: true
+
+    unawaited_futures: true
+    discarded_futures: true
+    cancel_subscriptions: true
+    close_sinks: true
+    avoid_void_async: true
+
+    prefer_relative_imports: true
+
+    avoid_type_to_string: true
+    only_throw_errors: true
+    avoid_dynamic_calls: true
+
+    prefer_final_locals: true
+    prefer_final_in_for_each: true
+
+    unnecessary_lambdas: true
+    unnecessary_parenthesis: true
+    unnecessary_breaks: true
+    require_trailing_commas: true
