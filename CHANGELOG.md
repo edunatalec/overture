@@ -5,6 +5,7 @@
 ### Changed
 
 - Reformatted the LICENSE into the canonical single-line-paragraph MIT template with a standardized copyright line — no change to the license terms.
+- Adopted the stricter shared analysis options; no code changes were needed.
 
 ## [0.1.1] - 2026-07-28
 
