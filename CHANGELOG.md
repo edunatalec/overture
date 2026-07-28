@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Lowered the minimum SDK from Dart `^3.10.0` to `^3.8.0` — the only pinning feature was wildcard parameters (Dart 3.7), so the package installs on toolchains back to mid-2025.
+- The `flutter` environment constraint now declares the real floor (`>=3.32.0`, the Flutter release paired with Dart 3.8) instead of the meaningless template default `>=3.0.0`.
+
 ## [0.1.0] - 2026-05-08
 
 ### Added

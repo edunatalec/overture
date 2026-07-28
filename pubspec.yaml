@@ -7,8 +7,8 @@ homepage: https://github.com/edunatalec/overture
 repository: https://github.com/edunatalec/overture
 
 environment:
-  sdk: ^3.10.0
-  flutter: '>=3.0.0'
+  sdk: ^3.8.0
+  flutter: '>=3.32.0'
 
 dependencies:
   flutter:
