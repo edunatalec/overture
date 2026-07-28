@@ -43,7 +43,7 @@ Or in `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  overture: ^0.1.1
+  overture: ^0.1.2
 ```
 
 ## Quick Start

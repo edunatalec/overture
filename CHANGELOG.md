@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2] - 2026-07-28
+
+### Changed
+
+- Reformatted the LICENSE into the canonical single-line-paragraph MIT template with a standardized copyright line — no change to the license terms.
+
 ## [0.1.1] - 2026-07-28
 
 ### Changed
