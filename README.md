@@ -23,7 +23,7 @@ Or in `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  overture: ^0.1.2
+  overture: ^0.1.3
 ```
 
 ```dart

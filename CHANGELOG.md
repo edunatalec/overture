@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3] - 2026-08-01
+
+### Changed
+
+- API reference: every symbol cited in prose is now a link, each public type ends with a `See also:` block, and the library page introduces the entry points instead of restating the description.
+- README follows the skeleton shared by the published packages: the feature list moved into `## Why overture`, the etymology became `## Why the name`, `## Contents` lists only what comes after it, and the example section states the command that runs the demo app.
+
 ## [0.1.2] - 2026-07-28
 
 ### Changed
