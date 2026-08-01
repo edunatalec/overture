@@ -1,7 +1,7 @@
 [![pub package](https://img.shields.io/pub/v/overture.svg)](https://pub.dev/packages/overture)
 [![package publisher](https://img.shields.io/pub/publisher/overture.svg)](https://pub.dev/packages/overture/publisher)
 
-<img src="docs/demo.gif" alt="Overture demo — left column hits the network, right column was pre-warmed and renders instantly" width="240" />
+<img src="https://github.com/edunatalec/overture/raw/master/assets/demo.gif" alt="Overture demo — left column hits the network, right column was pre-warmed and renders instantly" width="240" />
 
 A tiny, dependency-free Flutter utility that pre-warms `PaintingBinding.instance.imageCache` **from any non-widget code** — controllers, services, repositories — without needing a `BuildContext`. Pairs naturally with `Image.network`, `cached_network_image`, or any other image widget: they all read the same global `imageCache`. It warms RAM only — no disk cache.
 
@@ -105,6 +105,7 @@ await Overture.warmWith(
 - [Caveats](#caveats)
 - [Why the name](#why-the-name)
 - [Example app](#example-app)
+- [Contributing](#contributing)
 - [License](#license)
 
 ## Why overture
@@ -203,7 +204,7 @@ In an opera, the _overture_ is the orchestral piece that plays before the curtai
 
 ## Example app
 
-A demo app lives in [`example/`](example/). It shows two columns side-by-side: the left renders cold (`Image.network` straight to the network), the right was pre-warmed with `Overture.warm` before render. Tap "Load 6 images" to see the difference: the right column paints instantly from cache while the left shows a spinner per tile. Run it with:
+A demo app lives in [`example/`](https://github.com/edunatalec/overture/tree/master/example). It shows two columns side-by-side: the left renders cold (`Image.network` straight to the network), the right was pre-warmed with `Overture.warm` before render. Tap "Load 6 images" to see the difference: the right column paints instantly from cache while the left shows a spinner per tile. Run it with:
 
 ```sh
 cd example
@@ -211,6 +212,10 @@ flutter create .   # generate platform folders the first time
 flutter run
 ```
 
+## Contributing
+
+[CONTRIBUTING.md](https://github.com/edunatalec/overture/blob/master/CONTRIBUTING.md) is the contract for whoever writes code here: the one command that has to be green before a pull request, what the two CI jobs check, the conventions, and the deliberate gaps a PR should not try to fix.
+
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](https://github.com/edunatalec/overture/blob/master/LICENSE).

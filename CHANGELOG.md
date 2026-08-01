@@ -2,10 +2,15 @@
 
 ## [0.1.3] - 2026-08-01
 
+### Added
+
+- `CONTRIBUTING.md` now ships in the published archive, which is what makes pub.dev show the "Contributing" link in the package sidebar.
+
 ### Changed
 
 - API reference: every symbol cited in prose is now a link, each public type ends with a `See also:` block, and the library page introduces the entry points instead of restating the description.
-- README follows the skeleton shared by the published packages: the feature list moved into `## Why overture`, the etymology became `## Why the name`, `## Contents` lists only what comes after it, and the example section states the command that runs the demo app.
+- README follows the skeleton shared by the published packages: the feature list moved into `## Why overture`, the etymology became `## Why the name`, `## Contents` lists only what comes after it, the example section states the command that runs the demo app, and a `## Contributing` section points at the contributor contract.
+- Links to repository files are absolute. A relative link is rewritten to GitHub on the package page but left untouched in the generated API reference, where it resolved to a 404 — the demo gif and the links to `LICENSE` and `example/` were affected.
 
 ## [0.1.2] - 2026-07-28
 
