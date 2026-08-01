@@ -1,11 +1,31 @@
 #!/bin/bash
 set -e
 
+RELEASE_BRANCH=master
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" != "$RELEASE_BRANCH" ]; then
+  echo "❌ Aborting: a release runs from ${RELEASE_BRANCH}, and HEAD is on ${BRANCH}."
+  echo "   Publishing is irreversible, and a tag cut outside ${RELEASE_BRANCH} points at a commit no published branch carries."
+  exit 1
+fi
+
+if [ -n "$(git status --porcelain)" ]; then
+  echo "❌ Aborting: the working tree is not clean."
+  echo "   'pub publish' packs the files on disk, not the commit — every uncommitted change would ship, unretractably."
+  git status --short
+  exit 1
+fi
+
 ./scripts/verify.sh
 
 PACKAGE=$(awk '/^name:/ {print $2; exit}' pubspec.yaml)
 VERSION=$(awk '/^version:/ {print $2; exit}' pubspec.yaml)
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+CLI=dart
+if grep -q "sdk: flutter" pubspec.yaml; then
+  CLI=flutter
+fi
 
 TOTAL_STEPS=3
 STEP=0
@@ -23,11 +43,11 @@ else
 fi
 
 step "Pushing"
-git push origin "$BRANCH"
+git push origin "$RELEASE_BRANCH"
 git push --tags
 
 step "Publishing to pub.dev"
-flutter pub publish --force
+$CLI pub publish --force
 
 echo
 echo "🎉 Done! Published $PACKAGE v$VERSION"
