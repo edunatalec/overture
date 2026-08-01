@@ -51,11 +51,10 @@ CLAUDE.md
 .superpowers/
 scripts/
 analysis_options.yaml
-CONTRIBUTING.md
 .github/
 .fvm/
 .fvmrc
-docs/
+assets/
 
 example/pubspec.lock
 example/android/
