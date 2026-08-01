@@ -1,5 +1,3 @@
-/// @docImport 'package:flutter/widgets.dart';
-///
 /// Pre-warms Flutter's image cache from non-widget code, so the first frame
 /// that shows an image paints it straight from RAM.
 ///
@@ -26,5 +24,7 @@
 ///  * [Overture.warmWith], which warms any [ImageProvider] — a provider with
 ///    custom headers, a file-backed one, or one from another package.
 library;
+
+import 'package:flutter/widgets.dart';
 
 export 'src/overture.dart';
