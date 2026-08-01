@@ -1,37 +1,17 @@
-# Overture
-
 [![pub package](https://img.shields.io/pub/v/overture.svg)](https://pub.dev/packages/overture)
 [![package publisher](https://img.shields.io/pub/publisher/overture.svg)](https://pub.dev/packages/overture/publisher)
 
 <img src="docs/demo.gif" alt="Overture demo — left column hits the network, right column was pre-warmed and renders instantly" width="240" />
 
-A tiny, dependency-free Flutter utility that pre-warms `PaintingBinding.instance.imageCache` **from any non-widget code** — controllers, services, repositories — without needing a `BuildContext`. Pairs naturally with `Image.network`, `cached_network_image`, or any other image widget: they all read the same global `imageCache`.
+A tiny, dependency-free Flutter utility that pre-warms `PaintingBinding.instance.imageCache` **from any non-widget code** — controllers, services, repositories — without needing a `BuildContext`. Pairs naturally with `Image.network`, `cached_network_image`, or any other image widget: they all read the same global `imageCache`. It warms RAM only — no disk cache.
 
-- **Context-free** — call from controllers, repositories, services, anywhere. No `BuildContext` required.
-- **String shortcut + generic escape hatch** — `Overture.warm(urls)` for the URL case, `Overture.warmWith(builder, inputs)` for any `ImageProvider` (CNI, custom headers, file-backed, etc.).
-- **Drop-in cache hit** — uses the exact same key the widget will compute, so the next render paints synchronously from cache.
-- **Forgiving** — null/empty entries skipped, duplicates dropped, per-item errors swallowed.
-- **Bounded** — total wait is capped by `timeout` (default `5s`); never blocks the caller forever.
-- **Zero dependencies** — `flutter` only. No transitive surprises.
+## Requirements
 
-## Table of Contents
+Flutter 3.32 or newer, which ships Dart 3.8:
 
-- [Why](#why)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [API](#api)
-- [How it works](#how-it-works)
-- [Pairing with cached_network_image](#pairing-with-cached_network_image)
-- [Caveats](#caveats)
-- [Example App](#example-app)
-- [Why "overture"?](#why-overture)
-- [License](#license)
-
-## Why
-
-Flutter's built-in `precacheImage(provider, context)` requires a `BuildContext`. That's a poor fit for clean-architecture apps where the data layer (controllers, services, repositories) shouldn't depend on Flutter's widget tree — and it's awkward to call from a route guard, a background fetch, a stream listener, or anywhere else outside `build()`. `Overture.warm` does the same job without the context: pass it the URLs as soon as they arrive (right after a JSON fetch is the canonical spot) and the bitmaps are decoded into the global `imageCache` while the rest of your app is still composing the UI.
-
-The payoff is **perceived UI quality**. When the widget tree finally builds, every `Image.network(url)` finds the bitmap already in cache and paints synchronously on the first frame — no progress spinners, no fade-in, no layout shift, no flash of placeholder. For galleries, lists with thumbnails, hero transitions, and any flow where the user notices the difference between "blank → loading → image" and "image, instantly", warming the cache up-front turns a janky reveal into a clean one.
+```sh
+flutter --version
+```
 
 ## Installation
 
@@ -46,7 +26,11 @@ dependencies:
   overture: ^0.1.2
 ```
 
-## Quick Start
+```dart
+import 'package:overture/overture.dart';
+```
+
+## Quick start
 
 Warm the cache from any non-widget code, then build your widgets normally — the first frame finds the bitmaps already decoded.
 
@@ -111,6 +95,31 @@ await Overture.warmWith(
 ```
 
 `warm` and `warmWith` both return a `Future<void>` that completes when every entry has loaded into the cache (or failed individually), or when the `timeout` elapses — whichever comes first. **Neither ever throws.**
+
+## Contents
+
+- [Why overture](#why-overture)
+- [API](#api)
+- [How it works](#how-it-works)
+- [Pairing with cached_network_image](#pairing-with-cached_network_image)
+- [Caveats](#caveats)
+- [Why the name](#why-the-name)
+- [Example app](#example-app)
+- [License](#license)
+
+## Why overture
+
+- **Context-free** — call from controllers, repositories, services, anywhere. No `BuildContext` required.
+- **String shortcut + generic escape hatch** — `Overture.warm(urls)` for the URL case, `Overture.warmWith(builder, inputs)` for any `ImageProvider` (CNI, custom headers, file-backed, etc.).
+- **Drop-in cache hit** — uses the exact same key the widget will compute, so the next render paints synchronously from cache.
+- **Forgiving** — null/empty entries skipped, duplicates dropped, per-item errors swallowed.
+- **Bounded** — total wait is capped by `timeout` (default `5s`); never blocks the caller forever.
+- **RAM only** — no disk cache. Pair it with `cached_network_image` when the bytes have to survive an app restart.
+- **Zero dependencies** — `flutter` only. No transitive surprises.
+
+Flutter's built-in `precacheImage(provider, context)` requires a `BuildContext`. That's a poor fit for clean-architecture apps where the data layer (controllers, services, repositories) shouldn't depend on Flutter's widget tree — and it's awkward to call from a route guard, a background fetch, a stream listener, or anywhere else outside `build()`. `Overture.warm` does the same job without the context: pass it the URLs as soon as they arrive (right after a JSON fetch is the canonical spot) and the bitmaps are decoded into the global `imageCache` while the rest of your app is still composing the UI.
+
+The payoff is **perceived UI quality**. When the widget tree finally builds, every `Image.network(url)` finds the bitmap already in cache and paints synchronously on the first frame — no progress spinners, no fade-in, no layout shift, no flash of placeholder. For galleries, lists with thumbnails, hero transitions, and any flow where the user notices the difference between "blank → loading → image" and "image, instantly", warming the cache up-front turns a janky reveal into a clean one.
 
 ## API
 
@@ -188,7 +197,11 @@ The two libraries cooperate via the global `imageCache`. Both prefetch and rende
   - **DPR-variant assets** — `AssetImage.obtainKey` picks the variant from `configuration.devicePixelRatio`. With `ImageConfiguration.empty` the DPR is `null` and the resolved key may differ from the widget's at render time, leading to a cache miss. First-class asset support with explicit DPR plumbing is on the roadmap.
 - Items still in flight when `timeout` fires are not cancelled. They may eventually populate the cache anyway, but the future returns.
 
-## Example App
+## Why the name
+
+In an opera, the _overture_ is the orchestral piece that plays before the curtain rises — it sets the mood while the audience settles in, so the moment the stage lights come up the show starts clean. This package does the same for your image cache: it warms the bitmaps in RAM while the app is still composing the UI, so the first frame paints without flicker.
+
+## Example app
 
 A demo app lives in [`example/`](example/). It shows two columns side-by-side: the left renders cold (`Image.network` straight to the network), the right was pre-warmed with `Overture.warm` before render. Tap "Load 6 images" to see the difference: the right column paints instantly from cache while the left shows a spinner per tile. Run it with:
 
@@ -197,10 +210,6 @@ cd example
 flutter create .   # generate platform folders the first time
 flutter run
 ```
-
-## Why "overture"?
-
-In an opera, the _overture_ is the orchestral piece that plays before the curtain rises — it sets the mood while the audience settles in, so the moment the stage lights come up the show starts clean. This package does the same for your image cache: it warms the bitmaps in RAM while the app is still composing the UI, so the first frame paints without flicker.
 
 ## License
 
